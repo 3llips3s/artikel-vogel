@@ -1,0 +1,44 @@
+name: artikel_vogel
+description: "Ein Flappy-Bird-Spiel zum Üben deutscher Artikel."
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.7.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flame: ^1.30.1
+  csv: ^6.0.0
+  shared_preferences: ^2.5.3
+  flame_audio: ^2.11.8
+  url_launcher: ^6.3.2
+  web: ^1.1.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+  flutter_launcher_icons: ^0.14.4
+
+flutter_launcher_icons:
+  android: "ic_launcher"
+  ios: true
+  image_path: "assets/icons/icon_full.png"
+  adaptive_icon_background: "#FFFFFF"
+  adaptive_icon_foreground: "assets/icons/icon_foreground.png"
+  web:
+    generate: true
+    image_path: "assets/icons/icon_full.png"
+    background_color: "#FFFFFF"
+    theme_color: "#FFFFFF"
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/icons/
+    - assets/images/
+    - assets/audio/
+    - assets/data/german_nouns.csv

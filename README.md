@@ -1,0 +1,25 @@
+# Artikel Vogel
+
+Ein Flappy-Bird-Spiel zum Üben deutscher Artikel. Y
+
+## About
+Artikel Vogel is a simple, engaging web and mobile game designed to help language learners memorize German noun genders (der, die, das) using a classic Flappy Bird mechanic.
+
+## Tech Stack
+- **Framework**: Flutter
+- **Game Engine**: Flame
+- **Web Host**: GitHub Pages
+
+## How to Play (Web)
+Open the [Web App](https://studio10200.dev/artikel-vogel/)
+
+Tap the screen to flap. Guide the bird through the gap that corresponds to the correct article (der/die/das) for the German noun displayed on the screen.
+
+## Installation (Android)
+1. Download the latest APK from the [Releases](https://github.com/3llips3s/artikel-vogel/releases) page 
+2. Open the APK on your Android device.
+3. If prompted, allow "Installation from Unknown Sources".
+4. Install and enjoy :)
+
+## License
+MIT License. See [LICENSE](LICENSE) for details.
