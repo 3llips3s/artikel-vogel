@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../../../core/audio/audio_manager.dart';
 import '../../../core/constants/game_constants.dart';
@@ -24,7 +26,8 @@ import '../ui/components/score.dart';
 import '../ui/components/tap_to_start.dart';
 import 'game_state.dart';
 
-class ArtikelVogel extends FlameGame with TapCallbacks, HasCollisionDetection {
+class ArtikelVogel extends FlameGame
+    with TapCallbacks, HasCollisionDetection, KeyboardEvents {
   late Bird bird;
   late Background background;
   late Ground ground;
@@ -117,6 +120,25 @@ class ArtikelVogel extends FlameGame with TapCallbacks, HasCollisionDetection {
 
     AudioManager.playFlap();
     bird.flap();
+  }
+
+  @override
+  KeyEventResult onKeyEvent(
+    KeyEvent event,
+    Set<LogicalKeyboardKey> keysPressed,
+  ) {
+    if (!gameState.isGameOver) {
+      if (keysPressed.contains(LogicalKeyboardKey.space)) {
+        // Prevent continuous flapping on key hold
+        if (event is KeyDownEvent) {
+          AudioManager.warmup();
+          AudioManager.playFlap();
+          bird.flap();
+        }
+        return KeyEventResult.handled;
+      }
+    }
+    return KeyEventResult.ignored;
   }
 
   void startGame() {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../../../../core/constants/colors.dart';
 import '../../../../core/models/german_noun.dart';
@@ -53,6 +54,7 @@ class GameOverDialog extends StatefulWidget {
 
 class _GameOverDialogState extends State<GameOverDialog> {
   bool _canInteract = false;
+  final FocusNode _focusNode = FocusNode();
 
   @override
   void initState() {
@@ -62,9 +64,16 @@ class _GameOverDialogState extends State<GameOverDialog> {
       if (mounted) {
         setState(() {
           _canInteract = true;
+          _focusNode.requestFocus();
         });
       }
     });
+  }
+
+  @override
+  void dispose() {
+    _focusNode.dispose();
+    super.dispose();
   }
 
   void _handleRestart() {
@@ -74,39 +83,51 @@ class _GameOverDialogState extends State<GameOverDialog> {
 
   @override
   Widget build(BuildContext context) {
-    return GlassmorphicDialog(
-      width: 300,
-      actions: [
-        Padding(
-          padding: const EdgeInsets.only(top: 12.0, bottom: 12.0),
-          child: AnimatedOpacity(
-            opacity: _canInteract ? 1.0 : 0.0,
-            duration: const Duration(milliseconds: 900),
-            curve: Curves.easeIn,
-            child: GlassButton(
-              onPressed: _canInteract ? _handleRestart : () {},
-              color: AppColors.primary,
-              child: const Icon(
-                Icons.refresh_rounded,
-                color: AppColors.white,
-                size: 32,
+    return Focus(
+      focusNode: _focusNode,
+      onKeyEvent: (node, event) {
+        if (_canInteract && 
+            event is KeyDownEvent && 
+            event.logicalKey == LogicalKeyboardKey.space) {
+          _handleRestart();
+          return KeyEventResult.handled;
+        }
+        return KeyEventResult.ignored;
+      },
+      child: GlassmorphicDialog(
+        width: 300,
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(top: 12.0, bottom: 12.0),
+            child: AnimatedOpacity(
+              opacity: _canInteract ? 1.0 : 0.0,
+              duration: const Duration(milliseconds: 900),
+              curve: Curves.easeIn,
+              child: GlassButton(
+                onPressed: _canInteract ? _handleRestart : () {},
+                color: AppColors.primary,
+                child: const Icon(
+                  Icons.refresh_rounded,
+                  color: AppColors.white,
+                  size: 32,
+                ),
               ),
             ),
           ),
-        ),
-      ],
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          const SizedBox(height: 8),
-          _buildTitle(),
-          const SizedBox(height: 32),
-          _buildScoreSection(),
-          if (widget.currentNoun != null) ...[
-            const SizedBox(height: 36),
-            _buildNounSection(),
-          ],
         ],
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const SizedBox(height: 8),
+            _buildTitle(),
+            const SizedBox(height: 32),
+            _buildScoreSection(),
+            if (widget.currentNoun != null) ...[
+              const SizedBox(height: 36),
+              _buildNounSection(),
+            ],
+          ],
+        ),
       ),
     );
   }
