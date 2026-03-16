@@ -15,7 +15,8 @@ Artikel Vogel is a simple web and mobile game designed to help players memorize 
 ## How to Play (Web)
 Open the [Web App](https://studio10200.dev/artikel-vogel/)
 
-Tap the screen to flap. Guide the bird through the gap that corresponds to the correct article (der/die/das) for the German noun displayed on the screen.
+1. Tap to flap.
+2. Fly through the gap with the correct article (der / die / das) of the German noun shown.
 
 ## Installation (Android)
 1. Download the latest APK from the [Releases](https://github.com/3llips3s/artikel-vogel/releases) page 
