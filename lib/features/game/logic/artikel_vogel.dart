@@ -15,7 +15,7 @@ import '../ui/components/audio_button.dart';
 import '../ui/components/background.dart';
 import '../ui/components/bird.dart';
 import '../ui/components/credits_button.dart';
-import '../ui/components/fullscreen_button.dart';
+
 import '../ui/components/game_over_dialog.dart';
 import '../ui/components/ground.dart';
 import '../ui/components/pipe_manager.dart';
@@ -31,7 +31,6 @@ class ArtikelVogel extends FlameGame with TapCallbacks, HasCollisionDetection {
   late PipeManager pipeManager;
   late Score scoreText;
   late AudioButton audioButton;
-  late FullscreenButton fullscreenButton;
   late CreditsButton creditsButton;
 
   late NounSelector nounSelector;
@@ -68,11 +67,6 @@ class ArtikelVogel extends FlameGame with TapCallbacks, HasCollisionDetection {
 
     audioButton = AudioButton();
     add(audioButton);
-
-    if (kIsWeb) {
-      fullscreenButton = FullscreenButton();
-      add(fullscreenButton);
-    }
 
     creditsButton = CreditsButton();
     add(creditsButton);
@@ -112,16 +106,12 @@ class ArtikelVogel extends FlameGame with TapCallbacks, HasCollisionDetection {
   void onTapDown(TapDownEvent event) {
     final tappedAudio = audioButton.containsPoint(event.localPosition);
     final tappedCredits = creditsButton.containsPoint(event.localPosition);
-    final tappedFullscreen =
-        kIsWeb && fullscreenButton.containsPoint(event.localPosition);
 
-    final tappedUI = tappedAudio || tappedCredits || tappedFullscreen;
+    final tappedUI = tappedAudio || tappedCredits;
 
-    // The DOM listener unlocks the context, but if it fired before audio
-    // was initialized, we retry starting the BGM on the next flutter tap
-    if (kIsWeb && !AudioManager.isMusicPlaying) {
-      AudioManager.startBackgroundMusic();
-    }
+    // Start BGM and decode all audio pools instantly into memory.
+    // This safely absorbs the web audio decoding stutter into the first tap.
+    AudioManager.warmup();
 
     if (tappedUI) return;
 
@@ -148,15 +138,22 @@ class ArtikelVogel extends FlameGame with TapCallbacks, HasCollisionDetection {
     _selectNextNoun();
   }
 
-  void gameOver() async {
+  /// Called when the player loses. [noun] and [correctArticle] can be
+  /// supplied by the collision source (e.g. a PipePair) to avoid showing
+  /// the wrong noun when gameState has already advanced to the next one.
+  void gameOver({GermanNoun? noun, String? correctArticle}) async {
     if (gameState.isGameOver) return;
+
+    // Use the caller-provided noun if available, else fall back to gameState
+    final displayNoun = noun ?? gameState.currentNoun;
+    final displayArticle = correctArticle ?? gameState.correctArticle;
 
     AudioManager.playIncorrect();
     gameState.gameOver();
     AudioManager.pauseBackgroundMusic();
 
-    if (gameState.currentNoun != null) {
-      await IncorrectNounsTracker.addIncorrectNoun(gameState.currentNoun!);
+    if (displayNoun != null) {
+      await IncorrectNounsTracker.addIncorrectNoun(displayNoun);
     }
 
     final isNewRecord = await HighScoreManager.updateHighScore(gameState.score);
@@ -169,8 +166,8 @@ class ArtikelVogel extends FlameGame with TapCallbacks, HasCollisionDetection {
       score: gameState.score,
       highScore: highScore,
       isNewRecord: isNewRecord,
-      currentNoun: gameState.currentNoun,
-      correctArticle: gameState.correctArticle,
+      currentNoun: displayNoun,
+      correctArticle: displayArticle,
       onRestart: resetGame,
     );
   }

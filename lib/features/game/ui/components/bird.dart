@@ -7,6 +7,7 @@ import 'package:flame/components.dart';
 import '../../../../core/constants/game_constants.dart';
 import '../../logic/artikel_vogel.dart';
 import 'ground.dart';
+import 'pipe_pair.dart';
 import 'pipe_segment.dart';
 
 class Bird extends SpriteComponent
@@ -104,7 +105,13 @@ class Bird extends SpriteComponent
   void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
     super.onCollision(intersectionPoints, other);
 
-    if (other is Ground || other is PipeSegment) {
+    if (other is PipeSegment) {
+      final pipePair = other.parent as PipePair;
+      (parent as ArtikelVogel).gameOver(
+        noun: pipePair.noun,
+        correctArticle: pipePair.correctArticle,
+      );
+    } else if (other is Ground) {
       (parent as ArtikelVogel).gameOver();
     }
   }

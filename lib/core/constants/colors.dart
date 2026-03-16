@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+
 class AppColors {
   static const Color primary = Color(0xFF1C4D8D);
   static const Color accent = Color(0xFF22D76E);
@@ -27,8 +28,6 @@ class AppColors {
   // components
   static const speakerOn = primary;
   static const speakerOff = Color(0x801C4D8D);
-  static const fullscreenOn = accent;
-  static const fullscreenOff = score;
   static const credits = Color(0x801C4D8D);
   static const Color buttonGradientStart = Color(0x661C4D8D);
   static const Color buttonGradientEnd = Color(0x331C4D8D);

@@ -142,7 +142,7 @@ class PipePair extends PositionComponent with HasGameReference<ArtikelVogel> {
 
           game.onCorrectGap();
         } else {
-          game.gameOver();
+          game.gameOver(noun: noun, correctArticle: correctArticle);
         }
       }
     }
