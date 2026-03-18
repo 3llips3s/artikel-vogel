@@ -2,6 +2,9 @@ import 'dart:developer' as developer;
 
 import 'package:flame_audio/flame_audio.dart';
 
+import '../util/web_audio_helper_stub.dart'
+    if (dart.library.js_interop) '../util/web_audio_helper.dart';
+
 class AudioManager {
   static bool _isInitialized = false;
   static bool _isMuted = false;
@@ -59,6 +62,10 @@ class AudioManager {
   static void warmup() {
     if (_isWarmedUp || !_isInitialized) return;
     _isWarmedUp = true;
+
+    // Explicitly resume any suspended browser AudioContexts.
+    // Required by Brave, Safari, and other strict-autoplay browsers.
+    resumeBrowserAudioContexts();
 
     // Decodes and primes the Web Audio contexts for all sounds synchronously.
     // This will cause a tiny unnoticeable stutter on the Welcome screen tap,
