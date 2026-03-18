@@ -54,6 +54,29 @@
     }
   </style>
 
+  <!-- Cross-browser audio unlock (Brave, Safari, Firefox, etc.) -->
+  <script>
+    (function() {
+      var AC = window.AudioContext || window.webkitAudioContext;
+      if (!AC) return;
+      var contexts = [];
+      var Orig = AC;
+      window.AudioContext = function(opts) {
+        var ctx = opts ? new Orig(opts) : new Orig();
+        contexts.push(ctx);
+        return ctx;
+      };
+      window.AudioContext.prototype = Orig.prototype;
+      if (window.webkitAudioContext) window.webkitAudioContext = window.AudioContext;
+      function unlock() {
+        contexts.forEach(function(c) { if (c.state === 'suspended') c.resume(); });
+      }
+      ['click','touchstart','touchend','keydown'].forEach(function(e) {
+        document.addEventListener(e, unlock, { passive: true, capture: true });
+      });
+    })();
+  </script>
+
   <script src="flutter_bootstrap.js" async></script>
 </body>
 
