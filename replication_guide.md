@@ -283,6 +283,6 @@ Log in to Cloudflare > `studio10200.dev` > DNS records.
 | Game | Repo | Web? | Android? | URL |
 | :--- | :--- | :---: | :---: | :--- |
 | Hangmensch | `hangmensch` | ✅ | ✅ | `studio10200.dev/hangmensch/` |
-| [Game 2] | `[repo-name]` | ✅ | ✅ | `studio10200.dev/[repo-name]/` |
+| Wördle | `wordle` | ✅ | ❌ | `studio10200.dev/wordle/` |
 | [Game 3] | `[repo-name]` | ❌ | ✅ | APK download only |
 | Portfolio | `3llips3s.github.io` | ✅ | ❌ | `studio10200.dev/` |
