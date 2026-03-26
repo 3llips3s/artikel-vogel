@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../../../core/audio/audio_manager.dart';
+import '../../../core/constants/colors.dart';
 import '../../../core/constants/game_constants.dart';
 import '../../../core/models/german_noun.dart';
 import '../../nouns/data/csv_loader.dart';
@@ -80,6 +81,9 @@ class ArtikelVogel extends FlameGame
 
     _selectNextNoun();
   }
+
+  @override
+  Color backgroundColor() => AppColors.skyBlue;
 
   @override
   void update(double dt) {

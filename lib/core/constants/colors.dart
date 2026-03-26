@@ -15,6 +15,7 @@ class AppColors {
   static const Color score = Color(0xFF008D05);
   static const Color white = Colors.white;
   static const Color transparent = Colors.transparent;
+  static const Color skyBlue = Color(0xFFD6EEF8);
 
   // gradients & overlays
   static const Color blurBorder = Color(0x33FFFFFF);

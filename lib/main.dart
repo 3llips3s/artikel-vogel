@@ -26,9 +26,10 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: GameScreen(),
+      theme: ThemeData(scaffoldBackgroundColor: AppColors.skyBlue),
+      home: const GameScreen(),
     );
   }
 }
@@ -45,7 +46,7 @@ class GameScreen extends StatelessWidget {
     return Scaffold(
       extendBody: true,
       extendBodyBehindAppBar: true,
-      backgroundColor: AppColors.transparent,
+      backgroundColor: AppColors.skyBlue,
       body: GameWidget(game: ArtikelVogel()),
     );
   }
@@ -57,7 +58,7 @@ class _WebGameWrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.transparent,
+      backgroundColor: AppColors.skyBlue,
       body: LayoutBuilder(
         builder: (context, constraints) {
           final isLandscape = constraints.maxWidth > constraints.maxHeight;
