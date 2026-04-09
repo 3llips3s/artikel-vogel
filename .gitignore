@@ -49,7 +49,7 @@ brain/
 hangmensch_*.md
 *_prd.md
 *_progress.md
-*_setup_guide.md
+*_guide.md
 
 # Android secrets
 /android/local.properties
